@@ -1,0 +1,29 @@
+subscription SubscribeToMindmap ($id: ID!) {
+  subscribe(id: $id) {
+    type: __typename
+    ... on Doc {
+      json
+    }
+    ... on Modification {
+      path
+      action
+      value
+    }
+    ... on MindmapLabelEvent {
+      path
+      labelAction: action
+      labelValue: value {
+        id
+        name
+      }
+    }
+  }
+}
+
+subscription NewNotification {
+  newNotification {
+    id
+    content
+    meta
+  }
+}

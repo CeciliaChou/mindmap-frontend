@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  gqlEndpoint: 'http://localhost:4000/graphql',
+  gqlEndpointWs: 'ws://localhost:4000/graphql',
+  githubAuthUrl: 'http://localhost:4000/auth/github',
 };
 
 /*

@@ -1,0 +1,143 @@
+query Me {
+  me {
+    id
+    login
+    avatarUrl
+  }
+}
+
+query MyMindmaps($role: [Role!], $cursor: String) {
+  me {
+    id
+    mindmaps(roleFilter: $role, cursor: $cursor) {
+      items {
+        id
+        name
+      }
+      nextCursor
+    }
+  }
+}
+
+query SearchForMindmaps($text: String!, $cursor: String) {
+  searchMindmaps(text: $text, cursor: $cursor) {
+    items {
+      id
+      name
+      owner {
+        id
+      }
+    }
+    nextCursor
+  }
+}
+
+query GetAllNotifications($cursor: String, $unreadFilter: Boolean) {
+  listNotifications(cursor: $cursor, unreadFilter: $unreadFilter) {
+    items {
+      id
+      content
+      isRead
+    }
+    nextCursor
+  }
+}
+
+query GetLabel($labelId: ID!) {
+  getLabel(id: $labelId) {
+    id
+    name
+  }
+}
+
+query GetNodeLabels($mindmapId: ID!, $path: [String!]!) {
+  getNodeLabels(mindmapId: $mindmapId, path: $path) {
+    id
+    name
+  }
+}
+
+query GetSubscribedLabels {
+  getSubscribedLabels {
+    id
+    name
+  }
+}
+
+query GetLabelQuestions($labelId: ID!, $cursor: String) {
+  getLabel(id: $labelId) {
+    id
+    questions(nextToken: $cursor) {
+      items {
+        id
+        title
+        description
+        createdAt
+        creator {
+          id
+          login
+          avatarUrl
+        }
+      }
+      nextCursor: nextToken
+    }
+  }
+}
+
+query GetLabelIdeas($labelId: ID!, $cursor: String) {
+  getLabel(id: $labelId) {
+    id
+    ideas(nextToken: $cursor) {
+      items {
+        id
+        description
+        createdAt
+        creator {
+          id
+          login
+          avatarUrl
+        }
+      }
+      nextCursor: nextToken
+    }
+  }
+}
+
+query GetQuestionIdeas($questionId: ID!, $cursor: String) {
+  getQuestion(id: $questionId) {
+    id
+    addressedBy(nextToken: $cursor) {
+      items {
+        id
+        description
+        createdAt
+        creator {
+          id
+          login
+          avatarUrl
+        }
+      }
+      nextCursor: nextToken
+    }
+  }
+}
+
+query GetIdeaQuestions($ideaId: ID!, $cursor: String) {
+  getIdea(id: $ideaId) {
+    id
+    addresses(nextToken: $cursor) {
+      items {
+        id
+        title
+        description
+        createdAt
+        creator {
+          id
+          login
+          avatarUrl
+        }
+      }
+      nextCursor: nextToken
+    }
+  }
+}

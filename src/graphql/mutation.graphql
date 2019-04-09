@@ -1,0 +1,94 @@
+mutation Attach($id: ID!, $path: [ID!]!) {
+  attach(id: $id, path: $path)
+}
+
+mutation Delete($id: ID!, $path: [ID!]!, $oldName: String!) {
+  delete(id: $id, path: $path, oldName: $oldName)
+}
+
+mutation Rename($id: ID!, $path: [ID!]!, $oldName: String!, $newName: String!) {
+  rename(id: $id, path: $path, oldName: $oldName, newName: $newName)
+}
+
+mutation CreateMindmap($name: String!) {
+  createMindmap(name: $name) {
+    id
+  }
+}
+
+mutation ApplyToCollaborate($mindmapId: ID!) {
+  applyToCollaborateIn(mindmapId: $mindmapId)
+}
+
+mutation CollaborateInMindmap($mindmapId: ID!, $userId: ID!) {
+  collaborateInMindmap(userId: $userId, mindmapId: $mindmapId) {
+    id
+  }
+}
+
+mutation MarkNotificationAsRead($id: ID) {
+  markNotificationAsRead(id: $id)
+}
+
+mutation AssociateNodeWithLabel($mindmapId: ID!, $path: [String!]!, $labelId: ID!) {
+  associateNodeWithLabel(mindmapId: $mindmapId, path: $path, labelId: $labelId) {
+    id
+  }
+}
+
+mutation DisassociateNodeWithLabel($mindmapId: ID!, $path: [String!]!, $labelId: ID!) {
+  disassociateNodeWithLabel(mindmapId: $mindmapId, path: $path, labelId: $labelId) {
+    id
+  }
+}
+
+mutation SubscribeToLabel($labelId: ID!) {
+  subscribeToLabel(labelId: $labelId) {
+    id
+  }
+}
+
+mutation UnsubscribeToLabel($labelId: ID!) {
+  unsubscribeToLabel(labelId: $labelId) {
+    id
+  }
+}
+
+mutation CreateQuestion($title: String!, $description: String) {
+  createQuestion(title: $title, description: $description) {
+    id
+    title
+    description
+    createdAt
+    creator {
+      id
+      login
+      avatarUrl
+    }
+  }
+}
+
+mutation CreateIdea($description: String!) {
+  createIdea(description: $description) {
+    id
+    description
+    createdAt
+    creator {
+      id
+      login
+      avatarUrl
+    }
+  }
+}
+
+mutation AssociateEntityWithLabel($entityId: ID!, $labelId: ID!, $entityType: EntityType!) {
+  associateLabel(entityId: $entityId, labels: [$labelId], entityType: $entityType) {
+    id
+  }
+}
+
+mutation AddressQuestion($questionId: ID!, $ideaId: ID!) {
+  addressQuestion(questionId: $questionId, ideaId: $ideaId) {
+    id
+  }
+}

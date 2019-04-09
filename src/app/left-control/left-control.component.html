@@ -1,0 +1,91 @@
+<div class="header-wrapper">
+  <nz-badge nzDot [nzShowDot]="isCollapsed && unreadCount !== 0">
+    <img
+      [src]="currentUser?.avatarUrl || './assets/default-avatar.jpg'"
+      alt="avatar">
+  </nz-badge>
+  <span class="username-text" *ngIf="!isCollapsed">
+    {{ currentUser?.login }}
+  </span>
+  <div (click)="goSetting()" class="floating-btn header-btn" *ngIf="!isCollapsed">
+    <i nz-icon type="setting"></i>
+  </div>
+  <nz-badge [nzCount]="unreadCount" *ngIf="!isCollapsed">
+    <div class="floating-btn header-btn"
+         nz-popover
+         [nzTitle]="'Notifications'"
+         [nzContent]="notificationBox"
+         [(nzVisible)]="notificationBoxVisible"
+         nzTrigger="click"
+         nzPlacement="rightTop">
+      <i nz-icon type="notification"></i>
+    </div>
+  </nz-badge>
+  <ng-template #notificationBox>
+    <nz-list
+      [nzDataSource]="notifications$ | async"
+      nzSize="small"
+      [nzRenderItem]="item"
+    >
+      <ng-template #item let-notification>
+        <nz-list-item [nzContent]="notificationItem"></nz-list-item>
+        <ng-template #notificationItem>
+          <span [appParseLinks]="notification.content" (anchorClick)="notificationBoxClick($event)"></span>
+        </ng-template>
+      </ng-template>
+    </nz-list>
+  </ng-template>
+</div>
+<div class="list-wrapper">
+  <div class="search-box">
+    <nz-input-group [nzSuffix]="suffixIconSearch">
+      <label>
+        <!--suppress TypeScriptUnresolvedVariable -->
+        <input type="text" nz-input placeholder="Search for mindmaps"
+               (input)="searchInput($event.target?.value)"
+               [(ngModel)]="userSearchInput"
+               [nzAutocomplete]="auto"/>
+      </label>
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <i nz-icon type="search"></i>
+    </ng-template>
+    <nz-autocomplete #auto
+                     [nzBackfill]="false"
+                     [nzDefaultActiveFirstOption]="false">
+      <ng-container *ngIf="!isSearchPageOn">
+        <nz-auto-option *ngFor="let item of currentSearchResultItems | async"
+                        [nzValue]="''"
+                        (click)="clickSearchItem(item.id, item.owner)">
+          {{item.owner.id}} / {{item.name}}
+        </nz-auto-option>
+        <ng-container *ngIf="searchText">
+          <nz-auto-option *ngIf="loadingSearchItems; else notLoading" [nzDisabled]="true">
+            Loading...
+          </nz-auto-option>
+          <ng-template #notLoading>
+            <nz-auto-option *ngIf="currentSearchHasMoreItems | async"
+                            [nzValue]="''"
+                            (click)="goToSearch()">
+              More...
+              <span class="search-more-items-icon">
+              <i nz-icon type="right"></i>
+            </span>
+            </nz-auto-option>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+    </nz-autocomplete>
+  </div>
+  <app-list [isCollapsed]="isCollapsed"></app-list>
+  <div class="add-list-btn-wrapper">
+    <button nz-button nzGhost nzType="dashed" (click)="openAddListModal()">
+      <i class="anticon anticon-plus"></i>
+      <span *ngIf="!isCollapsed">New Mindmap</span>
+    </button>
+  </div>
+</div>
+
+<ng-template #newNotification let-data="data">
+  <span [appParseLinks]="data.content" (anchorClick)="notificationClick($event, data.id)"></span>
+</ng-template>

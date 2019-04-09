@@ -1,0 +1,97 @@
+<ul nz-menu
+    [nzTheme]="'dark'"
+    [nzMode]="'inline'"
+    [nzInlineCollapsed]="isCollapsed">
+  <li nz-submenu nzOpen="true">
+      <span title>
+        <i nz-icon type="appstore"></i>
+        <span>I created</span>
+      </span>
+    <ul>
+      <li nz-menu-item *ngFor="let item of list$?.owner | async"
+          [nzSelected]="currentItemUuid === item.id"
+          (click)="setCurrentItem(item.id)"
+          (contextmenu)="contextMenu($event, contextTemplate, item.id)">
+        {{item.name}}
+      </li>
+    </ul>
+  </li>
+  <li nz-submenu nzOpen="true">
+      <span title>
+        <i nz-icon type="appstore"></i>
+        <span>I collaborated in</span>
+      </span>
+    <ul>
+      <li nz-menu-item *ngFor="let item of list$?.collaborator | async"
+          [nzSelected]="currentItemUuid === item.id"
+          (click)="setCurrentItem(item.id)"
+          (contextmenu)="contextMenu($event, contextTemplate, item.id)">
+        {{item.name}}
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<ng-template #contextTemplate>
+  <ul nz-menu
+      nzInDropDown
+      nzSelectable
+      (nzClick)="close()">
+    <li nz-menu-item
+        (click)="openRenameListModal()">
+      <i class="anticon anticon-edit anticon-right-margin"></i>
+      <span>重命名</span>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item
+        (click)="delete()">
+      <i class="anticon anticon-delete anticon-right-margin danger"></i>
+      <span class="danger">删除列表</span>
+    </li>
+  </ul>
+</ng-template>
+
+<nz-modal [(nzVisible)]="addItemModalVisible"
+          [nzTitle]="'Create New Mindmap'"
+          [nzClosable]="true"
+          [nzWidth]="420"
+          [nzOkText]="'Create'"
+          [nzCancelText]="'Cancel'"
+          [nzMaskClosable]="true"
+          (nzOnCancel)="closeAddItemModal()"
+          (nzOnOk)="add(itemInput.value); itemInput.value = '';"
+          [nzOkLoading]="addItemOkLoading">
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-control>
+        <input nz-input
+               #itemInput
+               name="itemName"
+               placeholder="Name of the mindmap"
+               (keydown.enter)="add(itemInput.value); itemInput.value = '';">
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="renameListModalVisible"
+          [nzTitle]="'重命名列表'"
+          [nzClosable]="true"
+          [nzWidth]="420"
+          [nzOkText]="'重命名'"
+          [nzCancelText]="'取消'"
+          [nzMaskClosable]="true"
+          (nzOnCancel)="closeRenameListModal()"
+          (nzOnOk)="rename(listRenameInput.value); listRenameInput.value = '';">
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-control>
+        <input nz-input
+               #listRenameInput
+               placeholder="列表名称"
+               name="renameListTitle"
+               (keydown.enter)="rename(listRenameInput.value); listRenameInput.value = '';">
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
