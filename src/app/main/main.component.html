@@ -1,0 +1,26 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<nz-layout class="full-screen">
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="260">
+    <app-left-control [isCollapsed]="isCollapsed"></app-left-control>
+  </nz-sider>
+  <nz-content class="container">
+    <nz-layout>
+      <nz-content class="right-container">
+        <nz-breadcrumb [ngSwitch]="breadcrumbType">
+          <ng-container *ngSwitchCase="'search'">
+            <nz-breadcrumb-item>Search: {{searchText}}</nz-breadcrumb-item>
+          </ng-container>
+          <ng-container *ngSwitchCase="'mindmap'">
+            <nz-breadcrumb-item>Mindmaps</nz-breadcrumb-item>
+            <nz-breadcrumb-item *ngIf="mindmapName">{{mindmapName}}</nz-breadcrumb-item>
+          </ng-container>
+          <ng-container *ngSwitchCase="'subscribed'">
+            <nz-breadcrumb-item>Subscribed label</nz-breadcrumb-item>
+            <nz-breadcrumb-item *ngIf="currentLabelName">{{currentLabelName}}</nz-breadcrumb-item>
+          </ng-container>
+        </nz-breadcrumb>
+        <router-outlet (activate)="routerActivate($event)"></router-outlet>
+      </nz-content>
+    </nz-layout>
+  </nz-content>
+</nz-layout>

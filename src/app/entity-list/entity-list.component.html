@@ -1,0 +1,76 @@
+<nz-list [nzDataSource]="dataSource" [nzRenderItem]="item"
+         [nzHeader]="header"
+         [nzLoading]="!dataSource.length && itemLoading"
+         [nzLoadMore]="itemLoadMore">
+  <div class="mid-button" *ngIf="addItemEnabled">
+    <button nz-button [nzLoading]="addItemLoading" (click)="addEntityModalVisible = true">
+      Add idea
+    </button>
+  </div>
+</nz-list>
+<ng-template #itemLoadMore>
+  <div class="mid-button">
+    <button nz-button *ngIf="dataSource.length"
+            [disabled]="!hasMoreItems" [nzLoading]="itemLoading"
+            (click)="loadMoreItems()">
+      {{hasMoreItems ? 'Load More' : 'No more items'}}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #item let-item>
+  <nz-list-item [nzContent]="card">
+    <ng-template #card>
+      <nz-card [class.card-selected]="selectedItem?.id === item.id"
+               (click)="select(item)"
+               [nzExtra]="shouldDisplayInclude(item.id) ? extraTemplate : ''">
+        <nz-card-meta [nzTitle]="item.title"
+                      nzDescription="Created by {{item.creator.login}}"
+                      [nzAvatar]="avatar"
+        ></nz-card-meta>
+        <ng-template #avatar>
+          <nz-avatar [nzSrc]="item.creator.avatarUrl || './assets/default-avatar.jpg'"></nz-avatar>
+        </ng-template>
+        <div class="card-content">{{item.description}}</div>
+      </nz-card>
+      <ng-template #extraTemplate>
+        <a (click)="includeItemClicked($event, item)">{{includeText}}</a>
+      </ng-template>
+    </ng-template>
+  </nz-list-item>
+</ng-template>
+
+<nz-modal [(nzVisible)]="addEntityModalVisible"
+          [nzTitle]="'Add ' + entityType"
+          [nzClosable]="true"
+          [nzWidth]="420"
+          [nzOkText]="'Create'"
+          [nzCancelText]="'Cancel'"
+          [nzMaskClosable]="true"
+          (nzOnCancel)="addEntityModalVisible = false"
+          (nzOnOk)="entityType === 'question' ? addEntity(description.value, title.value)
+          : addEntity(description.value); title.value = ''; description.value = ''"
+          [nzOkLoading]="addItemLoading">
+  <form nz-form>
+    <nz-form-item [hidden]="entityType === 'idea'">
+      <nz-form-control>
+        <label>
+          <input nz-input
+                 #title
+                 name="title"
+                 placeholder="Title of the question">
+        </label>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <label>
+          <input nz-input
+                 #description
+                 name="description"
+                 placeholder="Description of the {{entityType}}">
+        </label>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

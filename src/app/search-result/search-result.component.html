@@ -1,0 +1,46 @@
+<nz-list
+  class="search-result-list"
+  [nzDataSource]="items"
+  [nzItemLayout]="'horizontal'"
+  [nzRenderItem]="item"
+  [nzLoadMore]="loadMore"
+  [nzLoading]="loadingMore"
+>
+  <ng-template #item let-item>
+    <nz-list-item
+      [nzActions]="isMyMindmap(item.id) ? [editAction] : [applyAction]">
+      <!--      [nzContent]="item.loading ? '' : 'content'"-->
+<!--      <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="false">-->
+                <ng-template #editAction><button nz-button (click)="goToMindmap(item.id)">Edit</button></ng-template>
+                <ng-template #applyAction><button nz-button (click)="applyToCollaborate(item.id)">Apply to collaborate</button></ng-template>
+        <nz-list-item-meta
+          [nzTitle]="nzTitle"
+          nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
+          <!--          nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"-->
+          <ng-template #nzTitle>
+            {{item.owner.id}} / {{item.name}}
+          </ng-template>
+        </nz-list-item-meta>
+<!--      </nz-skeleton>-->
+    </nz-list-item>
+  </ng-template>
+  <ng-template #loadMore>
+    <div class="loadmore">
+      <ng-container *ngIf="currentSearchHasMoreItems | async; else noMoreItems">
+        <button nz-button *ngIf="!loadingMore; else loadingMoreTemplate" (click)="loadMoreItems()">
+          Load more
+        </button>
+        <ng-template #loadingMoreTemplate>
+          <button nz-button [disabled]="true" [nzLoading]="true">
+            Loading more...
+          </button>
+        </ng-template>
+      </ng-container>
+      <ng-template #noMoreItems>
+        <button nz-button [disabled]="true">
+          No more items
+        </button>
+      </ng-template>
+    </div>
+  </ng-template>
+</nz-list>

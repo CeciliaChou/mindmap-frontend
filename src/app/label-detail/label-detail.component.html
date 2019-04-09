@@ -1,0 +1,55 @@
+<nz-page-header>
+  <nz-page-header-title>{{label?.name}}</nz-page-header-title>
+  <nz-page-header-tags>
+    <nz-tag [nzColor]="isLabelSubscribed ? 'blue' : ''"
+            (click)="toggleSubscribe()">
+      {{isLabelSubscribed ? 'Subscribed' : 'Not subscribed'}}
+    </nz-tag>
+  </nz-page-header-tags>
+</nz-page-header>
+<div nz-row [nzGutter]="24">
+  <div nz-col [nzSpan]="itemSelected ? 8 : 12">
+    <app-entity-list [dataSource]="questions"
+                     [header]="'Questions associated with this label'"
+                     [hasMoreItems]="!!questionCursor"
+                     [entityType]="'question'"
+                     [itemLoading]="questionLoading"
+                     [addItemLoading]="addQuestionLoading"
+                     [shouldDisplayInclude]="shouldDisplayInclude('question')"
+                     [includeText]="'Address with the selected idea'"
+                     (loadMore)="loadMore('question')"
+                     (addItem)="addEntity('question', $event.description, $event.title)"
+                     [(selectedItem)]="selectedQuestion"
+                     (includeItem)="addressQuestion($event)">
+    </app-entity-list>
+  </div>
+  <div nz-col *ngIf="itemSelected" [nzSpan]="8">
+    <!--suppress AngularInvalidExpressionResultType -->
+    <app-entity-list [addItemEnabled]="false"
+                     [dataSource]="addressingItems"
+                     [header]="itemSelected === 'question' ?
+                      'Ideas addressing the selected question' :
+                       'Questions addressed by the selected idea'"
+                     [hasMoreItems]="!!addressingCursor"
+                     [entityType]="itemSelected"
+                     [itemLoading]="addressingLoading"
+                     [canSelectItem]="false"
+                     (loadMore)="loadMoreAddressing()">
+    </app-entity-list>
+  </div>
+  <div nz-col [nzSpan]="itemSelected ? 8 : 12">
+    <app-entity-list [dataSource]="ideas"
+                     [header]="'Ideas associated with this label'"
+                     [hasMoreItems]="!!ideaCursor"
+                     [entityType]="'idea'"
+                     [itemLoading]="ideaLoading"
+                     [addItemLoading]="addIdeaLoading"
+                     [includeText]="'Address the selected question'"
+                     [shouldDisplayInclude]="shouldDisplayInclude('idea')"
+                     (loadMore)="loadMore('idea')"
+                     (addItem)="addEntity('idea', $event.description, $event.title)"
+                     [(selectedItem)]="selectedIdea"
+                     (includeItem)="addressQuestion($event)">
+    </app-entity-list>
+  </div>
+</div>

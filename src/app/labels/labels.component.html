@@ -1,0 +1,27 @@
+<div class="mindmap-node-labels">
+  <nz-tag
+    *ngFor="let label of labels"
+    [nzColor]="isLabelDisplayed(label.id) ? 'green' : isLabelSubscribed(label) ? 'blue' : ''"
+    [nzMode]="'closeable'"
+    (click)="toggleSubscribeTo(label)"
+    (nzOnClose)="handleClose(label, $event)"
+  >
+    {{ label.name }}
+  </nz-tag>
+  <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+    <i nz-icon type="plus"></i> New Label
+  </nz-tag>
+  <label>
+    <input
+      #inputElement
+      nz-input
+      nzSize="small"
+      *ngIf="inputVisible"
+      type="text"
+      [(ngModel)]="inputValue"
+      class="new-label-input"
+      (blur)="handleInputConfirm()"
+      (keydown.enter)="handleInputConfirm()"
+    />
+  </label>
+</div>

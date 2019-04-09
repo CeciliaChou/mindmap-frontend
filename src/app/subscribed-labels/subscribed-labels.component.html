@@ -1,0 +1,7 @@
+<div class="labels">
+  <app-labels [labels]="subscribedLabels" [clickToSubscribe]="false"
+              (newLabelCreated)="toggleSubscribe($event)"
+              (labelRemoved)="toggleSubscribe($event.id)"
+              (labelClicked)="showLabelDetail($event.id)"></app-labels>
+</div>
+<router-outlet></router-outlet>

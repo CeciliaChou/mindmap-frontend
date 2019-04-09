@@ -1,0 +1,17 @@
+<app-mindmap-body #body [map]="map$ | async" (manipulation)="onManipulation($event)"
+                  (prepare)="prepare($event)"
+                  *ngIf="mindmapId; else empty"></app-mindmap-body>
+<app-labels class="mindmap-node-labels" [labels]="labels"
+            (newLabelCreated)="handleInputConfirm($event)"
+            (labelRemoved)="handleClose($event)">
+</app-labels>
+<ng-template #empty>
+  <nz-empty [nzNotFoundContent]="emptyTpl"></nz-empty>
+  <ng-template #emptyTpl>
+    <span>You are not authorized to view this mindmap.
+      <br>
+    Or, it simply doesn't exist.
+    <br>
+    If you are sure you've been granted privileges, please refresh the page.</span>
+  </ng-template>
+</ng-template>
