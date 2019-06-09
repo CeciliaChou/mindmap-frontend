@@ -43,8 +43,10 @@ export class EntityListComponent implements OnInit {
   }
 
   addEntity(description, title?) {
-    if (this.addItemEnabled)
-      this.addItem.emit({description, title})
+    if (this.addItemEnabled) {
+      this.addItem.emit({description, title});
+      this.addEntityModalVisible = false
+    }
   }
 
   select(item) {

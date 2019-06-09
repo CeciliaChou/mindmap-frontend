@@ -24,7 +24,8 @@ export class LabelsComponent {
   constructor(
     private labelsService: LabelService,
     private nzMessage: NzMessageService,
-  ) { }
+  ) {
+  }
 
   isLabelSubscribed(label) {
     return this.labelsService.isLabelSubscribed(label.id)
@@ -63,7 +64,9 @@ export class LabelsComponent {
 
   handleInputConfirm(): void {
     if (this.inputValue) {
-      this.newLabelCreated.emit(this.inputValue)
+      this.labelsService.getOrCreateLabel(this.inputValue)
+        .subscribe(id =>
+          this.newLabelCreated.emit(id))
     }
     this.inputValue = '';
     this.inputVisible = false;

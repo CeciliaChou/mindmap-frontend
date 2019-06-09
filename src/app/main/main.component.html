@@ -24,3 +24,25 @@
     </nz-layout>
   </nz-content>
 </nz-layout>
+
+<nz-modal [(nzVisible)]="debuggingUserVisible"
+          [nzTitle]="'Set debugging user'"
+          [nzClosable]="true"
+          [nzWidth]="420"
+          [nzMaskClosable]="true"
+          (nzOnCancel)="closeDebuggingUserModal()"
+          (nzOnOk)="setDebuggingUser(debuggingUserInput.value); debuggingUserInput.value = '';">
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-control>
+        <label>
+          <input nz-input
+                 #debuggingUserInput
+                 placeholder="Username"
+                 name="username"
+                 (keydown.enter)="setDebuggingUser(debuggingUserInput.value); debuggingUserInput.value = '';">
+        </label>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

@@ -62,6 +62,7 @@ export class MindmapBodyComponent implements AfterViewInit {
 
   private init(_map) {
     this.rootIds = Object.keys(_map.ideas).map(k => _map.ideas[k].id);
+    console.log('initting new map');
     this.mapModel = init(this.container.nativeElement, _map);
     this.modelInitResolve();
     this.addManipulationListeners();

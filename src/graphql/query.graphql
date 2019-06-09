@@ -141,3 +141,9 @@ query GetIdeaQuestions($ideaId: ID!, $cursor: String) {
     }
   }
 }
+
+query GetLabelByName($name: String!) {
+  getLabelByName(name: $name) {
+    id
+  }
+}

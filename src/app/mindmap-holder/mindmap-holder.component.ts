@@ -51,6 +51,7 @@ export class MindmapHolderComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit(): void {
     this.route.paramMap.subscribe(p => {
       const mindmapId = p.get('mapId');
+      console.log('detected route change, params', p);
       this.viewInitPromise
         .then(() => this.mindmap.setCurrentMindmap(mindmapId))
         .then(() => this.mindmapId = mindmapId)
@@ -115,14 +116,16 @@ export class MindmapHolderComponent implements OnInit, AfterViewInit, OnDestroy 
       labelEventsOb.pipe(skipUntil(getLabelsOb))
     ).subscribe(v => {
       console.log('received labelAction', v);
-      switch (v.labelAction) {
-        case LabelAction.Associate:
-          this.labels.push(v.labelValue);
-          break;
-        case LabelAction.Disassociate:
-          const idx = this.labels.findIndex(l => l.id === v.labelValue.id);
-          if (idx !== -1) this.labels.splice(idx, 1)
-      }
+      setTimeout(() => {
+        switch (v.labelAction) {
+          case LabelAction.Associate:
+            this.labels.push(v.labelValue);
+            break;
+          case LabelAction.Disassociate:
+            const idx = this.labels.findIndex(l => l.id === v.labelValue.id);
+            if (idx !== -1) this.labels.splice(idx, 1)
+        }
+      })
     })
   }
 
@@ -149,7 +152,7 @@ export class MindmapHolderComponent implements OnInit, AfterViewInit, OnDestroy 
 
   handleInputConfirm(value): void {
     this.labelService.associateNodeWithLabel(
-      this._mindmapId, this.selectedPath, value) // todo
+      this._mindmapId, this.selectedPath, value)
       .subscribe(() => {
       })
   }

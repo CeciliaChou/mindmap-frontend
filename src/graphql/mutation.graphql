@@ -92,3 +92,9 @@ mutation AddressQuestion($questionId: ID!, $ideaId: ID!) {
     id
   }
 }
+
+mutation CreateLabel($name: String!) {
+  createLabel(name: $name) {
+    id
+  }
+}

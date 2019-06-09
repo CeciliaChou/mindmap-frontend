@@ -271,6 +271,7 @@ export type Query = {
   getQuestion?: Maybe<Question>;
   getIdea?: Maybe<Idea>;
   getLabel?: Maybe<Label>;
+  getLabelByName?: Maybe<Label>;
   me?: Maybe<User>;
   searchMindmaps?: Maybe<MindmapConnection>;
   listNotifications?: Maybe<NotificationConnection>;
@@ -288,6 +289,10 @@ export type QueryGetIdeaArgs = {
 
 export type QueryGetLabelArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryGetLabelByNameArgs = {
+  name: Scalars["String"];
 };
 
 export type QuerySearchMindmapsArgs = {
@@ -517,6 +522,14 @@ export type AddressQuestionMutationVariables = {
 
 export type AddressQuestionMutation = { __typename?: "Mutation" } & {
   addressQuestion: Maybe<{ __typename?: "Question" } & Pick<Question, "id">>;
+};
+
+export type CreateLabelMutationVariables = {
+  name: Scalars["String"];
+};
+
+export type CreateLabelMutation = { __typename?: "Mutation" } & {
+  createLabel: Maybe<{ __typename?: "Label" } & Pick<Label, "id">>;
 };
 
 export type MeQueryVariables = {};
@@ -757,6 +770,14 @@ export type GetIdeaQuestionsQuery = { __typename?: "Query" } & {
         >;
       }
   >;
+};
+
+export type GetLabelByNameQueryVariables = {
+  name: Scalars["String"];
+};
+
+export type GetLabelByNameQuery = { __typename?: "Query" } & {
+  getLabelByName: Maybe<{ __typename?: "Label" } & Pick<Label, "id">>;
 };
 
 export type SubscribeToMindmapSubscriptionVariables = {
@@ -1086,6 +1107,23 @@ export class AddressQuestionGQL extends Apollo.Mutation<
 > {
   document = AddressQuestionDocument;
 }
+export const CreateLabelDocument = gql`
+  mutation CreateLabel($name: String!) {
+    createLabel(name: $name) {
+      id
+    }
+  }
+`;
+
+@Injectable({
+  providedIn: "root"
+})
+export class CreateLabelGQL extends Apollo.Mutation<
+  CreateLabelMutation,
+  CreateLabelMutationVariables
+> {
+  document = CreateLabelDocument;
+}
 export const MeDocument = gql`
   query Me {
     me {
@@ -1347,6 +1385,23 @@ export class GetIdeaQuestionsGQL extends Apollo.Query<
   GetIdeaQuestionsQueryVariables
 > {
   document = GetIdeaQuestionsDocument;
+}
+export const GetLabelByNameDocument = gql`
+  query GetLabelByName($name: String!) {
+    getLabelByName(name: $name) {
+      id
+    }
+  }
+`;
+
+@Injectable({
+  providedIn: "root"
+})
+export class GetLabelByNameGQL extends Apollo.Query<
+  GetLabelByNameQuery,
+  GetLabelByNameQueryVariables
+> {
+  document = GetLabelByNameDocument;
 }
 export const SubscribeToMindmapDocument = gql`
   subscription SubscribeToMindmap($id: ID!) {

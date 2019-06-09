@@ -25,13 +25,16 @@ export function init(container, map) {
   console.log(parentNodeMap, colorMap);
 
   const mapModel = new mapJS.MapModel(mapJS.DOMRender.layoutCalculator, []);
-  const jqContainer = jQuery(container);
+  const outerContainer = jQuery(container);
+  outerContainer.empty();
+  const jqContainer = jQuery('<div></div>').appendTo(outerContainer);
   jqContainer.domMapWidget(console, mapModel);
   mapModel.setIdea(content(map));
   const stylesheet = new ThemeProcessor().process(themeProvider).css;
   jqContainer.append(`
 <style>/*noinspection CssUnusedSymbol*/${stylesheet}.mapjs-link-hit {visibility: hidden;}
 </style>`);
+  jqContainer.focus();
 
   mapModel.addEventListener('nodeAttrChanged', e => {
     const color = get(e, 'attr.style.background'),

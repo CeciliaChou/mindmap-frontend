@@ -20,7 +20,7 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
-    "@mindmup/mapjs": "garlic0708/mapjs",
+    "@mindmup/mapjs": "file:../mapjs",
     "apollo-angular": "^1.5.0",
     "apollo-angular-link-http": "^1.5.0",
     "apollo-cache-inmemory": "^1.5.1",

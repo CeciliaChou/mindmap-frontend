@@ -18,6 +18,7 @@ export class UserService {
   currentUser: User;
 
   token: string;
+  debuggingUser: string;
 
   currentUserLoaded$ = new Subject<void>();
 
@@ -36,6 +37,11 @@ export class UserService {
       })
   }
 
+  setDebuggingUser(user) {
+    this.debuggingUser = user;
+    this.getCurrentUser()
+  }
+
   getCurrentUser() {
     this.currentUserLoaded$.next();
     console.log('fetching me');
@@ -43,6 +49,6 @@ export class UserService {
       .subscribe(({data: {me}}) => {
         console.log('me is', me);
         this.currentUser = me;
-      })
+      }, console.error)
   }
 }

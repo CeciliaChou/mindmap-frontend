@@ -2,6 +2,13 @@
     [nzTheme]="'dark'"
     [nzMode]="'inline'"
     [nzInlineCollapsed]="isCollapsed">
+  <li nz-menu-item [nzSelected]="isSubscribedOn"
+      (click)="goToSubscribed()">
+      <span title>
+        <i nz-icon type="form"></i>
+        <span>Subscribed labels</span>
+      </span>
+  </li>
   <li nz-submenu nzOpen="true">
       <span title>
         <i nz-icon type="appstore"></i>

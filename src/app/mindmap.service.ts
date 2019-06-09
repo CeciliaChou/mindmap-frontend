@@ -113,7 +113,13 @@ export class MindmapService {
         // Create an http link:
         const http = httpLink.create({
           uri: environment.gqlEndpoint,
-          headers: new HttpHeaders({Authorization: `Bearer ${this.userService.token}`}),
+          headers: new HttpHeaders(
+            this.userService.token ? {
+                Authorization: `Bearer ${this.userService.token}`,
+              } :
+              {
+                'user-id': this.userService.debuggingUser,
+              }),
         });
 
         // Create a WebSocket link:
@@ -121,8 +127,10 @@ export class MindmapService {
           uri: environment.gqlEndpointWs,
           options: {
             reconnect: true,
-            connectionParams: {
-              authToken: this.userService.token
+            connectionParams: this.userService.token ? {
+              authToken: this.userService.token,
+            } : {
+              'user-id': this.userService.debuggingUser,
             }
           }
         });
@@ -281,7 +289,8 @@ export class MindmapService {
           const [_, mindmapId, name] = meta.split('/');
           // Due to unknown reason, apollo subscription is fired multiple times with same payload
           // This check is to circumvent the problem
-          if (this.myMindmapsCollaborator.splice(-1)[0].id !== mindmapId)
+          const mindmapMeta = this.myMindmapsCollaborator.splice(-1)[0];
+          if (mindmapMeta.id !== mindmapId)
             this.addToMyMindmaps(Role.Collaborator, {
               id: mindmapId,
               name

@@ -3,11 +3,11 @@ import {
   AddressQuestionGQL,
   AssociateEntityWithLabelGQL,
   AssociateNodeWithLabelGQL,
-  CreateIdeaGQL,
+  CreateIdeaGQL, CreateLabelGQL,
   CreateQuestionGQL,
   DisassociateNodeWithLabelGQL,
   EntityType,
-  GetIdeaQuestionsGQL,
+  GetIdeaQuestionsGQL, GetLabelByNameGQL,
   GetLabelGQL,
   GetLabelIdeasGQL,
   GetLabelQuestionsGQL,
@@ -55,6 +55,8 @@ export class LabelService {
     private createIdeaGQL: CreateIdeaGQL,
     private associateEntityWithLabelGQL: AssociateEntityWithLabelGQL,
     private addressQuestionGQL: AddressQuestionGQL,
+    private getLabelByNameGQL: GetLabelByNameGQL,
+    private createLabelGQL: CreateLabelGQL,
   ) {
   }
 
@@ -158,6 +160,15 @@ export class LabelService {
 
   addressQuestion(questionId: string, ideaId: string) {
     return this.addressQuestionGQL.mutate({questionId, ideaId})
+  }
+
+  getOrCreateLabel(name: string): Observable<string> {
+    return this.getLabelByNameGQL.fetch({name}, {fetchPolicy: 'network-only'})
+      .pipe(switchMap(({data: {getLabelByName}}) => {
+        if (getLabelByName) return of(getLabelByName.id);
+        return this.createLabelGQL.mutate({name})
+          .pipe(map(({data: {createLabel: {id}}}) => id))
+      }))
   }
 
   clear() {

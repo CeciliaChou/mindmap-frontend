@@ -15,6 +15,8 @@ export class MainComponent implements OnInit {
   mindmapName: string = '';
   breadcrumbType: 'search' | 'mindmap' | 'subscribed';
 
+  debuggingUserVisible = true;
+
   get searchText() {
     return this.mindmap.currentSearchText
   }
@@ -33,12 +35,21 @@ export class MainComponent implements OnInit {
     this.mindmap.currentMindmap$.subscribe(item => {
       this.mindmapName = item && item.name || ''
     });
-    this.userService.getToken();
     this.userService.currentUserLoaded$
       .subscribe(() => {
         this.labelService.clear();
         this.labelService.getSubscribedLabels();
       })
+  }
+
+  closeDebuggingUserModal() {
+    this.debuggingUserVisible = false;
+    this.userService.getToken();
+  }
+
+  setDebuggingUser(user) {
+    this.debuggingUserVisible = false;
+    this.userService.setDebuggingUser(user);
   }
 
   routerActivate(component) {

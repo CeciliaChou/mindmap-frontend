@@ -4,7 +4,7 @@
          [nzLoadMore]="itemLoadMore">
   <div class="mid-button" *ngIf="addItemEnabled">
     <button nz-button [nzLoading]="addItemLoading" (click)="addEntityModalVisible = true">
-      Add idea
+      Add {{entityType}}
     </button>
   </div>
 </nz-list>

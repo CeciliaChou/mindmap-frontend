@@ -21,6 +21,8 @@ export class ListComponent implements OnInit, OnDestroy {
   addItemOkLoading = false;
   renameListModalVisible = false;
 
+  isSubscribedOn = false; // todo
+
   private dropdown: NzDropdownContextComponent;
   private destroy$ = new Subject();
 
@@ -43,7 +45,6 @@ export class ListComponent implements OnInit, OnDestroy {
       this.list$ = this.mindmap.getMyMindmaps();
     });
     this.mindmap.currentMindmap$.subscribe(item => {
-
       this.currentItemUuid = item && item.id;
     })
   }
@@ -81,8 +82,8 @@ export class ListComponent implements OnInit, OnDestroy {
     this.contextListUuid = uuid;
   }
 
-  click(uuid: string): void {
-
+  goToSubscribed() {
+    this.router.navigateByUrl('/subscribed')
   }
 
   rename(title: string): void {
